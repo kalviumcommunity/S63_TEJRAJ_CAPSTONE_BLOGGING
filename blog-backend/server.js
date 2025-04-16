@@ -6,6 +6,7 @@ app.get('/', (req,res)=>{
     res.send('Welcome to Blog API!');
 
 });
+
  
 app.get('/api/blogs', (req,res)=>{
     const sampleBlogs = [
