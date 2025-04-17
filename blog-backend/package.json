@@ -1,37 +1,19 @@
 {
- get_post_API
-  "name": "s63_tejraj_capstone_blogging",
-  "version": "1.0.0",
-  "description": "**# Blogging Website - Project Documentation**",
-
   "name": "blog-backend",
   "version": "1.0.0",
- main
-  "main": "index.js",
+  "description": "Blogging backend using Node.js and Express",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
- get_post_API
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kalviumcommunity/S63_TEJRAJ_CAPSTONE_BLOGGING.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kalviumcommunity/S63_TEJRAJ_CAPSTONE_BLOGGING/issues"
-  },
-  "homepage": "https://github.com/kalviumcommunity/S63_TEJRAJ_CAPSTONE_BLOGGING#readme",
+  "type": "commonjs",
   "dependencies": {
-    "dotenv": "^16.5.0",
-
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
- main
-    "express": "^5.1.0"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
