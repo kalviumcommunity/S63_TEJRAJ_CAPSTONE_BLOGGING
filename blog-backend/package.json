@@ -1,11 +1,17 @@
 {
+ get_post_API
   "name": "s63_tejraj_capstone_blogging",
   "version": "1.0.0",
   "description": "**# Blogging Website - Project Documentation**",
+
+  "name": "blog-backend",
+  "version": "1.0.0",
+ main
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+ get_post_API
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kalviumcommunity/S63_TEJRAJ_CAPSTONE_BLOGGING.git"
@@ -19,6 +25,13 @@
   "homepage": "https://github.com/kalviumcommunity/S63_TEJRAJ_CAPSTONE_BLOGGING#readme",
   "dependencies": {
     "dotenv": "^16.5.0",
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+ main
     "express": "^5.1.0"
   }
 }
