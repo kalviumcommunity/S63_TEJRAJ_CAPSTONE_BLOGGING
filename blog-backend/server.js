@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const PORT = 5000;
 
+ update-blog-endpoint
+
+ get_post_API
+ main
 app.use(express.json()); // Add this line to parse JSON bodies
 
 let blogs = [
@@ -32,6 +36,7 @@ app.post('/api/blogs/post', (req, res) => {
     res.status(201).json(newBlog);
 });
 
+ update-blog-endpoint
 app.put('/api/blogs/update', (req, res) => {
     const { id, title, content } = req.body;
 
@@ -57,3 +62,27 @@ app.put('/api/blogs/update', (req, res) => {
 app.listen(5000, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+app.listen(5000, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+
+app.get('/', (req,res)=>{
+    res.send('Welcome to Blog API!');
+
+});
+
+ 
+app.get('/api/blogs', (req,res)=>{
+    const sampleBlogs = [
+        {id:1, title: 'First Blog', content: 'Hello World'},
+        {id:2, title: "Second Blog", content: "This is another post"}
+    ];
+    res.json(sampleBlogs);
+});
+
+app.listen(5000,()=>{
+    console.log(`Server running on http://localhost:${PORT}`);
+})
+ main
+main
