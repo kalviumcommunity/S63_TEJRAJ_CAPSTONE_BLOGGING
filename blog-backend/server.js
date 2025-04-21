@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config();  
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -8,7 +8,7 @@ app.use(express.json()); // Add this line to parse JSON bodies
 
 //MongoDb Connection 
 mongoose.connect(process.env.MONGO_DB,{
-    useNewUrlParser: true,
+    useNewUrlParser: true,  
     useUnifiedTopology: true,
 })
 
@@ -16,6 +16,12 @@ mongoose.connect(process.env.MONGO_DB,{
 .catch(err => console.error("MongoDB connection error:",err));
 
 
+//Define a Schema & Model
+const blogSchema = new mongoose.Schema({
+    title: String,
+    content: String
+});
+const Blog = mongoose.model('Blog', blogSchema);
 
 
 let blogs = [
