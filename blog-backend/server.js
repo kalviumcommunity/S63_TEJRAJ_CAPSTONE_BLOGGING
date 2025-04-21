@@ -1,79 +1,88 @@
-require('dotenv').config();  
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const PORT = 5000;
 
-app.use(express.json()); // Add this line to parse JSON bodies
+app.use(express.json());
 
-//MongoDb Connection 
-mongoose.connect(process.env.MONGO_DB,{
-    useNewUrlParser: true,  
-    useUnifiedTopology: true,
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 
-.then(()=>console.log("MongoDb connected"))
-.catch(err => console.error("MongoDB connection error:",err));
+// Models
+const Blog = require('./models/Blog');  
+const User = require('./models/User');  
 
-
-//Define a Schema & Model
-const blogSchema = new mongoose.Schema({
-    title: String,
-    content: String
-});
-const Blog = mongoose.model('Blog', blogSchema);
-
-
-let blogs = [
-    {id: 1, title: 'First Blog', content: 'Hello World'},
-    {id: 2, title: "Second Blog", content: "This is another post"}
-];
-
+// Routes
 app.get('/', (req, res) => {
-    res.send('Welcome to Blog API!');
+  res.send('Welcome to Blog API!');
 });
 
-app.get('/api/blogs', (req, res) => {
+// Get all blogs with author populated
+app.get('/api/blogs', async (req, res) => {
+  try {
+    const blogs = await Blog.find().populate('author', 'username email');
     res.json(blogs);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching blogs', error: err.message });
+  }
 });
 
-app.post('/api/blogs/post', (req, res) => {
-    const { title, content } = req.body;
+// Add new blog (expects author ID)
+app.post('/api/blogs/post', async (req, res) => {
+  const { title, content, image, author } = req.body;
 
-    if (!title || !content) {
-        return res.status(400).json({ message: 'Title and Content are required' });
+  if (!title || !content || !author) {
+    return res.status(400).json({ message: 'Title, Content, and Author ID are required.' });
+  }
+
+  try {
+    const user = await User.findById(author);
+    if (!user) {
+      return res.status(404).json({ message: 'Author (user) not found.' });
     }
 
-    const newBlog = {
-        id: blogs.length + 1,
-        title, content
-    };
-    blogs.push(newBlog);
-    res.status(201).json(newBlog);
+    const newBlog = new Blog({ title, content, image, author });
+    const savedBlog = await newBlog.save();
+
+    res.status(201).json(savedBlog);
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving blog', error: err.message });
+  }
 });
 
-app.put('/api/blogs/update', (req, res) => {
-    const { id, title, content } = req.body;
+// Update blog
+app.put('/api/blogs/update', async (req, res) => {
+  const { id, title, content } = req.body;
 
-    if (!id || !title || !content) {
-        return res.status(400).json({ message: 'ID, Title and Content are required.' });
+  if (!id || !title || !content) {
+    return res.status(400).json({ message: 'ID, Title and Content are required.' });
+  }
+
+  try {
+    const blog = await Blog.findByIdAndUpdate(
+      id,
+      { title, content },
+      { new: true }
+    );
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found.' });
     }
-
-    const blogIndex = blogs.findIndex(blog => blog.id === parseInt(id));
-
-    if (blogIndex === -1) {
-        return res.status(404).json({ message: 'Blog not found.' });
-    }
-
-    blogs[blogIndex] = { ...blogs[blogIndex], title, content };
 
     res.status(200).json({
-        message: `Blog with ID ${id} updated successfully.`,
-        updatedBlog: blogs[blogIndex]
+      message: `Blog with ID ${id} updated successfully.`,
+      updatedBlog: blog
     });
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating blog', error: err.message });
+  }
 });
 
-
-app.listen(5000, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
