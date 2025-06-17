@@ -1,17 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from './App.jsx';
-import LoginPage from './LoginPage.jsx';
-import LandingPage from './components/LandingPage.jsx';
-import './index.css';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { ToastContainer } from 'react-toastify'
+import { Provider } from 'react-redux'
+import { persistor, store } from './store'
+import { PersistGate } from 'redux-persist/integration/react'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/app" element={<App />} />
-    </Routes>
-  </BrowserRouter>
-);
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor} >
+        <ToastContainer />
+        <App />
+
+      </PersistGate>
+    </Provider>
+  </StrictMode>
+)
