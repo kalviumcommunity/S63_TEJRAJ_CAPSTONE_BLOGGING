@@ -1,0 +1,8 @@
+{
+  "name": "Remix: FutureScope",
+  "description": "FutureScope is a premium editorial blog and digital magazine exploring the future of artificial intelligence, technology, startups, and innovation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
